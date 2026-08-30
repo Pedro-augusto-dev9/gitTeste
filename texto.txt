@@ -1,1 +1,6 @@
 olá a todos
+este é o novo modelo do projeto:
+- lista de pessoas -
+1 - João
+2 - Pedro
+3 - Maria
