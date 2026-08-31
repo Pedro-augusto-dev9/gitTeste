@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+    <style>
+        :root {
+            --bg-color: #121214;
+            --card-bg: #202024;
+            --text-color: #e1e1e6;
+            --primary: #8257e5;
+            --primary-hover: #9466ff;
+            --border: #323238;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        h1, h2 {
+            color: #fff;
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input, select, textarea {
+            background-color: #121214;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: 1px solid var(--primary);
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #29292e;
+            color: var(--primary);
+        }
+
+        tr:hover {
+            background-color: #29292e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Gerenciador Web de Tarefas</h1>
+        
+        <div class="grid">
+            <!-- Formulário de Usuários -->
+            <div class="card">
+                <h2>Cadastrar Usuário</h2>
+                <form action="/add_usuario" method="POST">
+                    <label>Nome:</label>
+                    <input type="text" name="nome" placeholder="Ex: Pedro Augusto" required>
+                    
+                    <label>Email:</label>
+                    <input type="email" name="email" placeholder="Ex: pedro@email.com" required>
+                    
+                    <button type="submit">Salvar Usuário</button>
+                </form>
+            </div>
+
+            <!-- Formulário de Tarefas -->
+            <div class="card">
+                <h2>Cadastrar Tarefa</h2>
+                <form action="/add_tarefa" method="POST">
+                    <label>Responsável:</label>
+                    <select name="usuario_id" required>
+                        <option value="">Selecione um usuário...</option>
+                        {% for user in usuarios %}
+                            <option value="{{ user[0] }}">{{ user[1] }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                    <label>Título da Tarefa:</label>
+                    <input type="text" name="titulo" placeholder="Ex: Estudar Flask" required>
+                    
+                    <label>Descrição:</label>
+                    <textarea name="descricao" rows="3" placeholder="Detalhes da tarefa..."></textarea>
+                    
+                    <button type="submit">Salvar Tarefa</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabela de Usuários -->
+        <div class="card" style="margin-bottom: 30px;">
+            <h2>Lista de Usuários</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in usuarios %}
+                    <tr>
+                        <td>{{ user[0] }}</td>
+                        <td>{{ user[1] }}</td>
+                        <td>{{ user[2] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tabela de Tarefas -->
+        <div class="card">
+            <h2>Lista de Tarefas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Responsável</th>
+                        <th>Título</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tarefa in tarefas %}
+                    <tr>
+                        <td>{{ tarefa[0] }}</td>
+                        <td>{{ tarefa[1] }}</td>
+                        <td>{{ tarefa[2] }}</td>
+                        <td>{{ tarefa[3] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
